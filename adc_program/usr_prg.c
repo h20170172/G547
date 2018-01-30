@@ -10,37 +10,31 @@ int main(void)
 {
 	int channel;
 	char channel_num=' ';
-	int num_bytes;
-	char voltage[20];
+	char volt_val[20];
 	int fd=0;
-	char full_device_file_name[]="/dev/adc_device";
+	char dfilename[]="/dev/adc_device";
 
 
-	// opening file descriptor
-	fd=open(full_device_file_name, O_RDWR, S_IREAD|S_IWRITE);
+	// descriptor file open
+	fd=open(dfilename, O_RDWR, S_IREAD|S_IWRITE);
 	if(fd<0)
 	{
 		printf("Cannot open device file. Aborting !!\n");
 		exit(-1);
 	}
 
-	// writing to char driver
+	// char driver write
 	printf("Enter channel number:");
 	scanf("%d",&channel);
-	if(channel>7||channel<0)
-	{
-		printf("Enter channel number between 0-7 !!\n");
-		return -2;
-	}
 	channel_num = '0' +(char)channel;
 	write(fd, channel_num, sizeof(channel_num));
 
 	// reading from char driver
 	
-	read(fd, &voltage, sizeof(voltage));
-	printf("10 bit voltage value:%s\n",voltage);
+	read(fd, &volt_val, sizeof(volt_val));
+	printf("10 bit volt_val value:%s\n",volt_val);
 
-	// close the file descriptor
+	// file descriptor closing
 	close(fd);
 	return 0;
 }
